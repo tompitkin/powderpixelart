@@ -28,34 +28,62 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.bStart = new System.Windows.Forms.Button();
+            this.bLoadImage = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // pictureBox
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(399, 299);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox.Location = new System.Drawing.Point(12, 12);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(399, 299);
+            this.pictureBox.TabIndex = 0;
+            this.pictureBox.TabStop = false;
+            // 
+            // bStart
+            // 
+            this.bStart.Enabled = false;
+            this.bStart.Location = new System.Drawing.Point(336, 318);
+            this.bStart.Name = "bStart";
+            this.bStart.Size = new System.Drawing.Size(75, 23);
+            this.bStart.TabIndex = 1;
+            this.bStart.Text = "Start";
+            this.bStart.UseVisualStyleBackColor = true;
+            // 
+            // bLoadImage
+            // 
+            this.bLoadImage.Location = new System.Drawing.Point(255, 317);
+            this.bLoadImage.Name = "bLoadImage";
+            this.bLoadImage.Size = new System.Drawing.Size(75, 23);
+            this.bLoadImage.TabIndex = 2;
+            this.bLoadImage.Text = "Load Image";
+            this.bLoadImage.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(423, 329);
-            this.Controls.Add(this.pictureBox1);
+            this.ClientSize = new System.Drawing.Size(423, 353);
+            this.Controls.Add(this.bLoadImage);
+            this.Controls.Add(this.bStart);
+            this.Controls.Add(this.pictureBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Powder Pixel Art";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox;
+        private System.Windows.Forms.Button bStart;
+        private System.Windows.Forms.Button bLoadImage;
     }
 }
 
