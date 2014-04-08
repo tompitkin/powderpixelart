@@ -5,8 +5,10 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 
@@ -14,50 +16,66 @@ namespace PowderPixelArt
 {
     public partial class Form1 : Form
     {
+        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        public static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
+
         public Form1()
         {
             InitializeComponent();
         }
-        private static Color empty = Color.FromArgb(0, 0, 0);
-        private static Color powder = Color.FromArgb(242, 189, 107);
-        private static Color water = Color.FromArgb(64, 64, 255);
-        private static Color fire = Color.FromArgb(255, 64, 64);
-        private static Color seed = Color.FromArgb(144, 192, 64);
-        private static Color gPowder = Color.FromArgb(176, 128, 80);
-        private static Color fan = Color.FromArgb(128, 128, 255);
-        private static Color ice = Color.FromArgb(208, 208, 255);
-        private static Color sBall = Color.FromArgb(255, 64, 160);
-        private static Color clone = Color.FromArgb(144, 112, 16);
-        private static Color fWorks = Color.FromArgb(255, 153, 102);
-        private static Color oil = Color.FromArgb(128, 48, 32);
-        private static Color c4 = Color.FromArgb(255, 255, 204);
-        private static Color stone = Color.FromArgb(128, 128, 128);
-        private static Color magma = Color.FromArgb(255, 102, 51);
-        private static Color virus = Color.FromArgb(128, 0, 128);
-        private static Color nitro = Color.FromArgb(68, 119, 0);
-        private static Color ant = Color.FromArgb(192, 128, 192);
-        private static Color torch = Color.FromArgb(255, 160, 32);
-        private static Color gas = Color.FromArgb(204, 153, 153);
-        private static Color soapy = Color.FromArgb(224, 224, 224);
-        private static Color thunder = Color.FromArgb(255, 255, 32);
-        private static Color metal = Color.FromArgb(64, 64, 64);
-        private static Color bomb = Color.FromArgb(102, 102, 0);
-        private static Color laser = Color.FromArgb(204, 0, 0);
-        private static Color acid = Color.FromArgb(204, 255, 0);
-        private static Color vine = Color.FromArgb(0, 187, 0);
-        private static Color salt = Color.FromArgb(255, 255, 255);
-        private static Color glass = Color.FromArgb(1, 1, 1);
-        private static Color bird = Color.FromArgb(128, 112, 80);
-        private static Color mercury = Color.FromArgb(170, 170, 170);
-        private static Color spark = Color.FromArgb(255, 204, 51);
-        private static Color fuse = Color.FromArgb(68, 51, 34);
-        private static Color cloud = Color.FromArgb(204, 204, 204);
-        private static Color pump = Color.FromArgb(0, 51, 51);
-        private static Color[] powderColors = new Color[] { empty,
-                                                            powder, water, fire, seed, gPowder, fan, ice, sBall, clone, fWorks, 
-                                                            oil, c4, stone, magma, virus, nitro, ant, torch, gas, soapy,
-                                                            thunder, metal, bomb, laser, acid, vine, salt, glass, bird, mercury,
-                                                            spark, fuse, cloud, pump};
+
+        internal static class PColors
+        {
+            public static Color empty = Color.FromArgb(0, 0, 0);
+            public static Color powder = Color.FromArgb(242, 189, 107);
+            public static Color water = Color.FromArgb(64, 64, 255);
+            public static Color fire = Color.FromArgb(255, 64, 64);
+            public static Color seed = Color.FromArgb(144, 192, 64);
+            public static Color gPowder = Color.FromArgb(176, 128, 80);
+            public static Color fan = Color.FromArgb(128, 128, 255);
+            public static Color ice = Color.FromArgb(208, 208, 255);
+            public static Color sBall = Color.FromArgb(255, 64, 160);
+            public static Color clone = Color.FromArgb(144, 112, 16);
+            public static Color fWorks = Color.FromArgb(255, 153, 102);
+            public static Color oil = Color.FromArgb(128, 48, 32);
+            public static Color c4 = Color.FromArgb(255, 255, 204);
+            public static Color stone = Color.FromArgb(128, 128, 128);
+            public static Color magma = Color.FromArgb(255, 102, 51);
+            public static Color virus = Color.FromArgb(128, 0, 128);
+            public static Color nitro = Color.FromArgb(68, 119, 0);
+            public static Color ant = Color.FromArgb(192, 128, 192);
+            public static Color torch = Color.FromArgb(255, 160, 32);
+            public static Color gas = Color.FromArgb(204, 153, 153);
+            public static Color soapy = Color.FromArgb(224, 224, 224);
+            public static Color thunder = Color.FromArgb(255, 255, 32);
+            public static Color metal = Color.FromArgb(64, 64, 64);
+            public static Color bomb = Color.FromArgb(102, 102, 0);
+            public static Color laser = Color.FromArgb(204, 0, 0);
+            public static Color acid = Color.FromArgb(204, 255, 0);
+            public static Color vine = Color.FromArgb(0, 187, 0);
+            public static Color salt = Color.FromArgb(255, 255, 255);
+            public static Color glass = Color.FromArgb(1, 1, 1);
+            public static Color bird = Color.FromArgb(128, 112, 80);
+            public static Color mercury = Color.FromArgb(170, 170, 170);
+            public static Color spark = Color.FromArgb(255, 204, 51);
+            public static Color fuse = Color.FromArgb(68, 51, 34);
+            public static Color cloud = Color.FromArgb(204, 204, 204);
+            public static Color pump = Color.FromArgb(0, 51, 51);
+
+            public static Color[] powderColors = new Color[] {  
+                                                                PColors.empty,
+                                                                PColors.powder, PColors.water, PColors.fire, PColors.seed, PColors.gPowder, PColors.fan, PColors.ice, PColors.sBall, PColors.clone, PColors.fWorks, 
+                                                                PColors.oil, PColors.c4, PColors.stone, PColors.magma, PColors.virus, PColors.nitro, PColors.ant, PColors.torch, PColors.gas, PColors.soapy,
+                                                                PColors.thunder, PColors.metal, PColors.bomb, PColors.laser, PColors.acid, PColors.vine, PColors.salt, PColors.glass, PColors.bird, PColors.mercury,
+                                                                PColors.spark, PColors.fuse, PColors.cloud, PColors.pump
+                                                             };
+        };
+
+        internal static class PLocations
+        {
+            public static Size stop = new Size(309, 430);
+            public static Size reset = new Size(358, 430);
+        };
 
         private void bLoadImage_Click(object sender, EventArgs e)
         {
@@ -85,7 +103,7 @@ namespace PowderPixelArt
                 graph.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
                 graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 graph.DrawImage(image, 0, 0, bmap.Width, bmap.Height);
-                applyColorPalette(bmap, powderColors);
+                applyColorPalette(bmap, PColors.powderColors);
                 pictureBox.Image = bmap;
                 bStart.Enabled = true;
             }
@@ -132,6 +150,61 @@ namespace PowderPixelArt
                     image.SetPixel(x, y, bestColor);
                 }
             }
+        }
+
+        private void bStart_Click(object sender, EventArgs e)
+        {
+            System.Timers.Timer timer = new System.Timers.Timer(4000);
+            timer.Elapsed += new ElapsedEventHandler(onTimedEvent);
+            timer.Enabled = true;
+        }
+
+        private void onTimedEvent(object o, ElapsedEventArgs e)
+        {
+            ((System.Timers.Timer)(o)).Enabled = false;
+
+            //if (getScreenColor(Cursor.Position.X, Cursor.Position.Y) != PColors.empty)
+                //return;
+
+            //alignMouse();
+            //System.Diagnostics.Debug.WriteLine(new Point((Cursor.Position.X - 2565), (Cursor.Position.Y - 596)));
+            //Cursor.Position = Point.Add(Cursor.Position, PLocations.stop);
+        }
+
+        private Bitmap screenPixel = new Bitmap(1, 1);
+        private Color getScreenColor(int posX, int posY)
+        {
+            using (Graphics gdest = Graphics.FromImage(screenPixel))
+            {
+                using (Graphics gsrc = Graphics.FromHwnd(IntPtr.Zero))
+                {
+                    IntPtr hSrcDC = gsrc.GetHdc();
+                    IntPtr hDC = gdest.GetHdc();
+                    int retval = BitBlt(hDC, 0, 0, 1, 1, hSrcDC, posX, posY, (int)CopyPixelOperation.SourceCopy);
+                    gdest.ReleaseHdc();
+                    gsrc.ReleaseHdc();
+                }
+            }
+            return screenPixel.GetPixel(0, 0);
+        }
+
+        private void alignMouse()
+        {
+            int posX = Cursor.Position.X;
+            int posY = Cursor.Position.Y;
+
+            do
+            {
+                Cursor.Position = new Point(posX, posY);
+                posX--;
+            } while (getScreenColor(posX, posY) == PColors.empty);
+            posX++;
+            do
+            {
+                Cursor.Position = new Point(posX, posY);
+                posY--;
+            } while (getScreenColor(posX, posY) == PColors.empty);
+            posY++;
         }
     }
 }

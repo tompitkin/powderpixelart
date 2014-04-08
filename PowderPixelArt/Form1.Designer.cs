@@ -54,6 +54,7 @@
             this.bStart.TabIndex = 1;
             this.bStart.Text = "Start";
             this.bStart.UseVisualStyleBackColor = true;
+            this.bStart.Click += new System.EventHandler(this.bStart_Click);
             // 
             // bLoadImage
             // 
