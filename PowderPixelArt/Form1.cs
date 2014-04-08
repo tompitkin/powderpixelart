@@ -18,12 +18,46 @@ namespace PowderPixelArt
         {
             InitializeComponent();
         }
-
+        private static Color empty = Color.FromArgb(0, 0, 0);
         private static Color powder = Color.FromArgb(242, 189, 107);
         private static Color water = Color.FromArgb(64, 64, 255);
         private static Color fire = Color.FromArgb(255, 64, 64);
         private static Color seed = Color.FromArgb(144, 192, 64);
-        private static Color[] powderColors = new Color[] {powder, water, fire, seed};
+        private static Color gPowder = Color.FromArgb(176, 128, 80);
+        private static Color fan = Color.FromArgb(128, 128, 255);
+        private static Color ice = Color.FromArgb(208, 208, 255);
+        private static Color sBall = Color.FromArgb(255, 64, 160);
+        private static Color clone = Color.FromArgb(144, 112, 16);
+        private static Color fWorks = Color.FromArgb(255, 153, 102);
+        private static Color oil = Color.FromArgb(128, 48, 32);
+        private static Color c4 = Color.FromArgb(255, 255, 204);
+        private static Color stone = Color.FromArgb(128, 128, 128);
+        private static Color magma = Color.FromArgb(255, 102, 51);
+        private static Color virus = Color.FromArgb(128, 0, 128);
+        private static Color nitro = Color.FromArgb(68, 119, 0);
+        private static Color ant = Color.FromArgb(192, 128, 192);
+        private static Color torch = Color.FromArgb(255, 160, 32);
+        private static Color gas = Color.FromArgb(204, 153, 153);
+        private static Color soapy = Color.FromArgb(224, 224, 224);
+        private static Color thunder = Color.FromArgb(255, 255, 32);
+        private static Color metal = Color.FromArgb(64, 64, 64);
+        private static Color bomb = Color.FromArgb(102, 102, 0);
+        private static Color laser = Color.FromArgb(204, 0, 0);
+        private static Color acid = Color.FromArgb(204, 255, 0);
+        private static Color vine = Color.FromArgb(0, 187, 0);
+        private static Color salt = Color.FromArgb(255, 255, 255);
+        private static Color glass = Color.FromArgb(1, 1, 1);
+        private static Color bird = Color.FromArgb(128, 112, 80);
+        private static Color mercury = Color.FromArgb(170, 170, 170);
+        private static Color spark = Color.FromArgb(255, 204, 51);
+        private static Color fuse = Color.FromArgb(68, 51, 34);
+        private static Color cloud = Color.FromArgb(204, 204, 204);
+        private static Color pump = Color.FromArgb(0, 51, 51);
+        private static Color[] powderColors = new Color[] { empty,
+                                                            powder, water, fire, seed, gPowder, fan, ice, sBall, clone, fWorks, 
+                                                            oil, c4, stone, magma, virus, nitro, ant, torch, gas, soapy,
+                                                            thunder, metal, bomb, laser, acid, vine, salt, glass, bird, mercury,
+                                                            spark, fuse, cloud, pump};
 
         private void bLoadImage_Click(object sender, EventArgs e)
         {
@@ -55,8 +89,6 @@ namespace PowderPixelArt
                 pictureBox.Image = bmap;
                 bStart.Enabled = true;
             }
-            else
-                bStart.Enabled = false;
         }
 
         private Bitmap resizeImage(Image image, int maxPixels)
