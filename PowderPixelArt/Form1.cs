@@ -19,6 +19,18 @@ namespace PowderPixelArt
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         public static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr WindowFromPoint(Point pnt);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
+
         public Form1()
         {
             InitializeComponent();
@@ -27,6 +39,8 @@ namespace PowderPixelArt
         internal static class PColors
         {
             public static Color empty = Color.FromArgb(0, 0, 0);
+            public static Color fanWidget = Color.FromArgb(255, 0, 0);
+            public static Color frameBorder = Color.FromArgb(96, 96, 96);
             public static Color powder = Color.FromArgb(242, 189, 107);
             public static Color water = Color.FromArgb(64, 64, 255);
             public static Color fire = Color.FromArgb(255, 64, 64);
@@ -75,7 +89,11 @@ namespace PowderPixelArt
         {
             public static Size stop = new Size(309, 430);
             public static Size reset = new Size(358, 430);
+            public static Size clear = new Size(308, 332);
+            public static Size dot = new Size(360, 416);
         };
+
+        private Point startPos = new Point(0, 0);
 
         private void bLoadImage_Click(object sender, EventArgs e)
         {
@@ -163,12 +181,33 @@ namespace PowderPixelArt
         {
             ((System.Timers.Timer)(o)).Enabled = false;
 
-            //if (getScreenColor(Cursor.Position.X, Cursor.Position.Y) != PColors.empty)
-                //return;
+            String text = getWindowName(WindowFromPoint(Cursor.Position));
 
-            //alignMouse();
-            //System.Diagnostics.Debug.WriteLine(new Point((Cursor.Position.X - 2565), (Cursor.Position.Y - 596)));
-            //Cursor.Position = Point.Add(Cursor.Position, PLocations.stop);
+            if (text != "SunAwtCanvas")
+            {
+                MessageBox.Show("Mouse was not placed in Powder Game Window!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            //Point temp = Cursor.Position;
+            alignMouse();
+            //Cursor.Position = temp;
+            //System.Diagnostics.Debug.WriteLine(new Point(Cursor.Position.X - startPos.X, Cursor.Position.Y - startPos.Y));
+            setUpGame();
+            /*Cursor.Position = Point.Add(Cursor.Position, PLocations.stop);
+            System.Threading.Thread.Sleep(20);
+            mouse_event((uint)0x00000002, 0, 0, 0, 0);
+            System.Threading.Thread.Sleep(20);
+            Cursor.Position = new Point(Cursor.Position.X + 1, Cursor.Position.Y);
+            System.Threading.Thread.Sleep(20);
+            mouse_event((uint)0x00000004, 0, 0, 0, 0);*/
+        }
+
+        private String getWindowName(IntPtr handle)
+        {
+            StringBuilder buffer = new StringBuilder(128);
+            GetClassName(handle, buffer, buffer.Capacity);
+            return buffer.ToString();
         }
 
         private Bitmap screenPixel = new Bitmap(1, 1);
@@ -197,14 +236,57 @@ namespace PowderPixelArt
             {
                 Cursor.Position = new Point(posX, posY);
                 posX--;
-            } while (getScreenColor(posX, posY) == PColors.empty);
-            posX++;
+            } while (getWindowName(WindowFromPoint(Cursor.Position)) == "SunAwtCanvas");
+            posX = posX + 6;
             do
             {
                 Cursor.Position = new Point(posX, posY);
                 posY--;
-            } while (getScreenColor(posX, posY) == PColors.empty);
-            posY++;
+            } while (getWindowName(WindowFromPoint(Cursor.Position)) == "SunAwtCanvas");
+            posY = posY + 6;
+            Cursor.Position = new Point(posX, posY);
+            startPos = Cursor.Position;
+        }
+
+        private void setUpGame()
+        {
+            keyPress(0x4C);
+            keyPress(0x0D);
+            keyPress(0x30);
+            moveMouse(PLocations.dot);
+            rightClick();
+            moveMouse(PLocations.clear);
+            rightClick();
+        }
+
+        private void moveMouse(Size loc)
+        {
+            System.Threading.Thread.Sleep(20);
+            Cursor.Position = Point.Add(startPos, loc);
+        }
+
+        private void leftClick()
+        {
+            System.Threading.Thread.Sleep(20);
+            mouse_event((uint)0x00000002, 0, 0, 0, 0);
+            System.Threading.Thread.Sleep(20);
+            mouse_event((uint)0x00000004, 0, 0, 0, 0);
+        }
+
+        private void rightClick()
+        {
+            System.Threading.Thread.Sleep(20);
+            mouse_event((uint)0x00000008, 0, 0, 0, 0);
+            System.Threading.Thread.Sleep(20);
+            mouse_event((uint)0x00000010, 0, 0, 0, 0);
+        }
+
+        private void keyPress(byte key)
+        {
+            System.Threading.Thread.Sleep(20);
+            keybd_event(key, 0, 0x0001, 0);
+            System.Threading.Thread.Sleep(20);
+            keybd_event(key, 0, 0x0002, 0); 
         }
     }
 }
