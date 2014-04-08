@@ -91,6 +91,7 @@ namespace PowderPixelArt
             public static Size reset = new Size(358, 430);
             public static Size clear = new Size(308, 332);
             public static Size dot = new Size(360, 416);
+            public static Size fan = new Size(19, 374);
         };
 
         private Point startPos = new Point(0, 0);
@@ -194,13 +195,7 @@ namespace PowderPixelArt
             //Cursor.Position = temp;
             //System.Diagnostics.Debug.WriteLine(new Point(Cursor.Position.X - startPos.X, Cursor.Position.Y - startPos.Y));
             setUpGame();
-            /*Cursor.Position = Point.Add(Cursor.Position, PLocations.stop);
-            System.Threading.Thread.Sleep(20);
-            mouse_event((uint)0x00000002, 0, 0, 0, 0);
-            System.Threading.Thread.Sleep(20);
-            Cursor.Position = new Point(Cursor.Position.X + 1, Cursor.Position.Y);
-            System.Threading.Thread.Sleep(20);
-            mouse_event((uint)0x00000004, 0, 0, 0, 0);*/
+            drawPic((Bitmap)pictureBox.Image);
         }
 
         private String getWindowName(IntPtr handle)
@@ -259,6 +254,33 @@ namespace PowderPixelArt
             rightClick();
         }
 
+        private void drawPic(Bitmap image)
+        {
+            Color curColor = PColors.empty;
+            for (int y = 0; y < image.Height; y++)
+            {
+                for (int x = 0; x < image.Width; x++)
+                {
+                    Color pixel = image.GetPixel(x, y);
+                    if (curColor != pixel)
+                    {
+                        selectColor(pixel);
+                        curColor = pixel;
+                    }
+                    leftClickDrag(new Size(1, 0));
+                    moveMouse(new Size(x, y));
+                    rightClick();
+                }
+            }
+        }
+
+        private void selectColor(Color pixel)
+        {
+            if (pixel == PColors.fan)
+                moveMouse(PLocations.fan);
+            leftClick();
+        }
+
         private void moveMouse(Size loc)
         {
             System.Threading.Thread.Sleep(20);
@@ -269,6 +291,16 @@ namespace PowderPixelArt
         {
             System.Threading.Thread.Sleep(20);
             mouse_event((uint)0x00000002, 0, 0, 0, 0);
+            System.Threading.Thread.Sleep(20);
+            mouse_event((uint)0x00000004, 0, 0, 0, 0);
+        }
+
+        private void leftClickDrag(Size dist)
+        {
+            System.Threading.Thread.Sleep(20);
+            mouse_event((uint)0x00000002, 0, 0, 0, 0);
+            System.Threading.Thread.Sleep(20);
+            Cursor.Position = Point.Add(Cursor.Position, dist);
             System.Threading.Thread.Sleep(20);
             mouse_event((uint)0x00000004, 0, 0, 0, 0);
         }
