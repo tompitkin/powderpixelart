@@ -77,7 +77,6 @@ namespace PowderPixelArt
             public static Color pump = Color.FromArgb(0, 51, 51);
 
             public static Color[] powderColors = new Color[] {  
-                                                                PColors.empty,
                                                                 PColors.powder, PColors.water, PColors.fire, PColors.seed, PColors.gPowder, PColors.fan, PColors.ice, PColors.sBall, PColors.clone, PColors.fWorks, 
                                                                 PColors.oil, PColors.c4, PColors.stone, PColors.magma, PColors.virus, PColors.nitro, PColors.ant, PColors.torch, PColors.gas, PColors.soapy,
                                                                 PColors.thunder, PColors.metal, PColors.bomb, PColors.laser, PColors.acid, PColors.vine, PColors.salt, PColors.glass, PColors.bird, PColors.mercury,
@@ -300,35 +299,53 @@ namespace PowderPixelArt
 
         private void drawPic(Bitmap image)
         {
-            Color curColor = PColors.empty;
-            for (int y = 0; y < image.Height; y++)
+            int curIndex = 0;
+            foreach (Color element in PColors.powderColors)
             {
-                for (int x = 0; x < image.Width; x++)
+                bool drag = false;
+                if (selectColor(element))
                 {
-                    if (cancelDraw)
+                    moveMouse(new Size(0, 0));
+                }
+                for (int y = 0; y < image.Height; y++)
+                {
+                    for (int x = 0; x < image.Width; x++)
                     {
-                        leftPressUp();
-                        cancelDraw = false;
-                        return;
-                    }
+                        if (cancelDraw)
+                        {
+                            leftPressUp();
+                            cancelDraw = false;
+                            return;
+                        }
 
-                    Color pixel = image.GetPixel(x, y);
-                    if (curColor != pixel)
-                    {
-                        leftPressUp();
-                        rightClick();
-                        if (selectColor(pixel))
+                        Color pixel = image.GetPixel(x, y);
+                        if (element != pixel && drag)
                         {
                             moveMouse(new Size(x, y));
-                            System.Threading.Thread.Sleep(SLEEP);
-                            leftPressDown();
+                            leftPressUp();
+                            drag = false;
+                            if (Array.IndexOf(PColors.powderColors, pixel) > curIndex)
+                                rightClick();
                         }
-                        curColor = pixel;
+                        else if (element == pixel)
+                        {
+                            if (!drag)
+                            {
+                                moveMouse(new Size(x, y));
+                                leftPressDown();
+                                drag = true;
+                            }
+                        }
                     }
-                    moveMouse(new Size(x+1, y));
+                    if (drag)
+                    {
+                        moveMouse(new Size(image.Width, y));
+                        leftPressUp();
+                        drag = false;
+                        rightClick();
+                    }
                 }
-                leftPressUp();
-                curColor = PColors.empty;
+                curIndex++;
             }
         }
 
