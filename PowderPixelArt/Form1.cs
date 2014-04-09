@@ -31,12 +31,10 @@ namespace PowderPixelArt
         [DllImport("user32.dll", SetLastError = true)]
         static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
 
-        public Form1()
-        {
-            InitializeComponent();
-        }
-
         private const int SLEEP = 20;
+        private Point startPos = new Point(0, 0);
+        private KeyboardHook hook = new KeyboardHook();
+        private bool cancelDraw = false;
 
         internal static class PColors
         {
@@ -96,7 +94,13 @@ namespace PowderPixelArt
             public static Size fan = new Size(19, 374);
         };
 
-        private Point startPos = new Point(0, 0);
+        public Form1()
+        {
+            InitializeComponent();
+
+            hook.KeyPressed += new EventHandler<KeyPressedEventArgs>(hook_KeyPressed);
+            hook.RegisterHotKey(0, Keys.Escape);
+        }
 
         private void bLoadImage_Click(object sender, EventArgs e)
         {
@@ -178,6 +182,11 @@ namespace PowderPixelArt
             System.Timers.Timer timer = new System.Timers.Timer(4000);
             timer.Elapsed += new ElapsedEventHandler(onTimedEvent);
             timer.Enabled = true;
+        }
+
+        void hook_KeyPressed(object sender, KeyPressedEventArgs e)
+        {
+            cancelDraw = true;
         }
 
         private void onTimedEvent(object o, ElapsedEventArgs e)
@@ -263,6 +272,13 @@ namespace PowderPixelArt
             {
                 for (int x = 0; x < image.Width; x++)
                 {
+                    if (cancelDraw)
+                    {
+                        leftPressUp();
+                        cancelDraw = false;
+                        return;
+                    }
+
                     Color pixel = image.GetPixel(x, y);
                     if (curColor != pixel)
                     {
