@@ -91,7 +91,40 @@ namespace PowderPixelArt
             public static Size reset = new Size(358, 430);
             public static Size clear = new Size(308, 332);
             public static Size dot = new Size(360, 416);
+            public static Size powder = new Size(22, 301);
+            public static Size water = new Size(21, 316);
+            public static Size fire = new Size(15, 331);
+            public static Size seed = new Size(17, 344);
+            public static Size gPowder = new Size(26, 358);
             public static Size fan = new Size(19, 374);
+            public static Size ice = new Size(17, 387);
+            public static Size sBall = new Size(25, 401);
+            public static Size clone = new Size(23, 414);
+            public static Size fWorks = new Size(30, 430);
+            public static Size oil = new Size(71, 302);
+            public static Size c4 = new Size(73, 316);
+            public static Size stone = new Size(77, 331);
+            public static Size magma = new Size(76, 345);
+            public static Size virus = new Size(80, 359);
+            public static Size nitro = new Size(81, 374);
+            public static Size ant = new Size(76, 390);
+            public static Size torch = new Size(83, 401);
+            public static Size gas = new Size(73, 415);
+            public static Size soapy = new Size(80, 431);
+            public static Size thunder = new Size(138, 304);
+            public static Size metal = new Size(133, 316);
+            public static Size bomb = new Size(129, 331);
+            public static Size laser = new Size(136, 346);
+            public static Size acid = new Size(136, 358);
+            public static Size vine = new Size(133, 373);
+            public static Size salt = new Size(135, 386);
+            public static Size glass = new Size(134, 401);
+            public static Size bird = new Size(136, 416);
+            public static Size mercury = new Size(139, 430);
+            public static Size spark = new Size(191, 302);
+            public static Size fuse = new Size(189, 318);
+            public static Size cloud = new Size(193, 331);
+            public static Size pump = new Size(188, 344);
         };
 
         public Form1()
@@ -301,8 +334,74 @@ namespace PowderPixelArt
 
         private bool selectColor(Color pixel)
         {
-            if (pixel == PColors.fan)
+            if (pixel == PColors.powder)
+                moveMouse(PLocations.powder);
+            else if (pixel == PColors.water)
+                moveMouse(PLocations.water);
+            else if (pixel == PColors.fire)
+                moveMouse(PLocations.fire);
+            else if (pixel == PColors.seed)
+                moveMouse(PLocations.seed);
+            else if (pixel == PColors.gPowder)
+                moveMouse(PLocations.gPowder);
+            else if (pixel == PColors.fan)
                 moveMouse(PLocations.fan);
+            else if (pixel == PColors.ice)
+                moveMouse(PLocations.ice);
+            else if (pixel == PColors.sBall)
+                moveMouse(PLocations.sBall);
+            else if (pixel == PColors.clone)
+                moveMouse(PLocations.clone);
+            else if (pixel == PColors.fWorks)
+                moveMouse(PLocations.fWorks);
+            else if (pixel == PColors.oil)
+                moveMouse(PLocations.oil);
+            else if (pixel == PColors.c4)
+                moveMouse(PLocations.c4);
+            else if (pixel == PColors.stone)
+                moveMouse(PLocations.stone);
+            else if (pixel == PColors.magma)
+                moveMouse(PLocations.magma);
+            else if (pixel == PColors.virus)
+                moveMouse(PLocations.virus);
+            else if (pixel == PColors.nitro)
+                moveMouse(PLocations.nitro);
+            else if (pixel == PColors.ant)
+                moveMouse(PLocations.ant);
+            else if (pixel == PColors.torch)
+                moveMouse(PLocations.torch);
+            else if (pixel == PColors.gas)
+                moveMouse(PLocations.gas);
+            else if (pixel == PColors.soapy)
+                moveMouse(PLocations.soapy);
+            else if (pixel == PColors.thunder)
+                moveMouse(PLocations.thunder);
+            else if (pixel == PColors.metal)
+                moveMouse(PLocations.metal);
+            else if (pixel == PColors.bomb)
+                moveMouse(PLocations.bomb);
+            else if (pixel == PColors.laser)
+                moveMouse(PLocations.laser);
+            else if (pixel == PColors.acid)
+                moveMouse(PLocations.acid);
+            else if (pixel == PColors.vine)
+                moveMouse(PLocations.vine);
+            else if (pixel == PColors.salt)
+                moveMouse(PLocations.salt);
+            else if (pixel == PColors.glass)
+                moveMouse(PLocations.glass);
+            else if (pixel == PColors.bird)
+                moveMouse(PLocations.bird);
+            else if (pixel == PColors.mercury)
+                moveMouse(PLocations.mercury);
+            else if (pixel == PColors.spark)
+                moveMouse(PLocations.spark);
+            else if (pixel == PColors.fuse)
+                moveMouse(PLocations.fuse);
+            else if (pixel == PColors.cloud)
+                moveMouse(PLocations.cloud);
+            else if (pixel == PColors.pump)
+                moveMouse(PLocations.pump);
             else
                 return false;
             leftClick();
