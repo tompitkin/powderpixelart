@@ -36,6 +36,8 @@ namespace PowderPixelArt
             InitializeComponent();
         }
 
+        private const int SLEEP = 20;
+
         internal static class PColors
         {
             public static Color empty = Color.FromArgb(0, 0, 0);
@@ -264,60 +266,82 @@ namespace PowderPixelArt
                     Color pixel = image.GetPixel(x, y);
                     if (curColor != pixel)
                     {
-                        selectColor(pixel);
+                        leftPressUp();
+                        rightClick();
+                        if (selectColor(pixel))
+                        {
+                            moveMouse(new Size(x, y));
+                            System.Threading.Thread.Sleep(SLEEP);
+                            leftPressDown();
+                        }
                         curColor = pixel;
                     }
-                    leftClickDrag(new Size(1, 0));
-                    moveMouse(new Size(x, y));
-                    rightClick();
+                    moveMouse(new Size(x+1, y));
                 }
+                leftPressUp();
+                curColor = PColors.empty;
             }
         }
 
-        private void selectColor(Color pixel)
+        private bool selectColor(Color pixel)
         {
             if (pixel == PColors.fan)
                 moveMouse(PLocations.fan);
+            else
+                return false;
             leftClick();
+            return true;
         }
 
         private void moveMouse(Size loc)
         {
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(SLEEP);
             Cursor.Position = Point.Add(startPos, loc);
+        }
+
+        private void leftPressDown()
+        {
+            System.Threading.Thread.Sleep(SLEEP);
+            mouse_event((uint)0x00000002, 0, 0, 0, 0);
+        }
+
+        private void leftPressUp()
+        {
+            System.Threading.Thread.Sleep(SLEEP);
+            mouse_event((uint)0x00000004, 0, 0, 0, 0);
         }
 
         private void leftClick()
         {
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(SLEEP);
             mouse_event((uint)0x00000002, 0, 0, 0, 0);
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(SLEEP);
             mouse_event((uint)0x00000004, 0, 0, 0, 0);
         }
 
         private void leftClickDrag(Size dist)
         {
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(SLEEP);
             mouse_event((uint)0x00000002, 0, 0, 0, 0);
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(SLEEP);
             Cursor.Position = Point.Add(Cursor.Position, dist);
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(SLEEP);
             mouse_event((uint)0x00000004, 0, 0, 0, 0);
         }
 
         private void rightClick()
         {
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(SLEEP);
             mouse_event((uint)0x00000008, 0, 0, 0, 0);
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(SLEEP);
             mouse_event((uint)0x00000010, 0, 0, 0, 0);
         }
 
         private void keyPress(byte key)
         {
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(SLEEP);
             keybd_event(key, 0, 0x0001, 0);
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(SLEEP);
             keybd_event(key, 0, 0x0002, 0); 
         }
     }
