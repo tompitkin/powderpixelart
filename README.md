@@ -26,6 +26,8 @@ __________________________________________________________________________
  - Do not touch your mouse or keyboard while the program draws!
 
  - You can stop the drawing process by pressing ESC at any time!
+  
+ - Make sure to refresh your Powder Game webpage before each drawing!
 
  - If the picture is not drawing correctly (e.g., pixel brush is too big, the simulation is running, weird lines
  streaking across picture), stop the drawing process and turn the delay up by 10 and try again. This changes the wait
