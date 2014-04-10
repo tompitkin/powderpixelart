@@ -31,6 +31,9 @@ namespace PowderPixelArt
         [DllImport("user32.dll", SetLastError = true)]
         static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
 
+        [DllImport("user32.dll")]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
         private int SLEEP = 20;
         private Point startPos = new Point(0, 0);
         private KeyboardHook hook = new KeyboardHook();
@@ -223,16 +226,6 @@ namespace PowderPixelArt
         {
             cancelDraw = true;
         }
-
-        [DllImport("user32.dll")]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
-        [return: MarshalAs(UnmanagedType.Bool)]
-        [DllImport("user32.dll")]
-        static extern bool AllowSetForegroundWindow(int procID);
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
         private void onTimedEvent(object o, ElapsedEventArgs e)
         {
