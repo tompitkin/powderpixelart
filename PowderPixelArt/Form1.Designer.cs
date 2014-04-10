@@ -32,7 +32,10 @@
             this.bStart = new System.Windows.Forms.Button();
             this.bLoadImage = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.DelayUpDown = new System.Windows.Forms.NumericUpDown();
+            this.delaySpeedText = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DelayUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox
@@ -71,11 +74,41 @@
             this.openFileDialog.FileName = "openFileDialog";
             this.openFileDialog.Filter = "Image Files (*.bmp, *.jpg)|*.bmp;*.jpg";
             // 
+            // DelayUpDown
+            // 
+            this.DelayUpDown.Location = new System.Drawing.Point(86, 313);
+            this.DelayUpDown.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.DelayUpDown.Name = "DelayUpDown";
+            this.DelayUpDown.Size = new System.Drawing.Size(47, 20);
+            this.DelayUpDown.TabIndex = 3;
+            this.DelayUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.DelayUpDown.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.DelayUpDown.ValueChanged += new System.EventHandler(this.DelayUpDown_ValueChanged);
+            // 
+            // delaySpeedText
+            // 
+            this.delaySpeedText.AutoSize = true;
+            this.delaySpeedText.Location = new System.Drawing.Point(12, 315);
+            this.delaySpeedText.Name = "delaySpeedText";
+            this.delaySpeedText.Size = new System.Drawing.Size(71, 13);
+            this.delaySpeedText.TabIndex = 4;
+            this.delaySpeedText.Text = "Delay Speed:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(419, 342);
+            this.Controls.Add(this.delaySpeedText);
+            this.Controls.Add(this.DelayUpDown);
             this.Controls.Add(this.bLoadImage);
             this.Controls.Add(this.bStart);
             this.Controls.Add(this.pictureBox);
@@ -84,7 +117,9 @@
             this.Name = "Form1";
             this.Text = "Powder Pixel Art";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DelayUpDown)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -94,6 +129,8 @@
         private System.Windows.Forms.Button bStart;
         private System.Windows.Forms.Button bLoadImage;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.NumericUpDown DelayUpDown;
+        private System.Windows.Forms.Label delaySpeedText;
     }
 }
 

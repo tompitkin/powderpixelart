@@ -31,7 +31,7 @@ namespace PowderPixelArt
         [DllImport("user32.dll", SetLastError = true)]
         static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
 
-        private const int SLEEP = 20;
+        private int SLEEP = 20;
         private Point startPos = new Point(0, 0);
         private KeyboardHook hook = new KeyboardHook();
         private bool cancelDraw = false;
@@ -88,6 +88,7 @@ namespace PowderPixelArt
         {
             public static Size stop = new Size(309, 430);
             public static Size reset = new Size(358, 430);
+            public static Size pen = new Size(305, 388);
             public static Size clear = new Size(308, 332);
             public static Size dot = new Size(360, 416);
             public static Size powder = new Size(22, 301);
@@ -160,7 +161,9 @@ namespace PowderPixelArt
                 graph.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
                 graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 graph.DrawImage(image, 0, 0, bmap.Width, bmap.Height);
+
                 applyColorPalette(bmap, PColors.powderColors);
+
                 pictureBox.Image = bmap;
                 bStart.Enabled = true;
             }
@@ -221,6 +224,16 @@ namespace PowderPixelArt
             cancelDraw = true;
         }
 
+        [DllImport("user32.dll")]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+        [return: MarshalAs(UnmanagedType.Bool)]
+        [DllImport("user32.dll")]
+        static extern bool AllowSetForegroundWindow(int procID);
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
         private void onTimedEvent(object o, ElapsedEventArgs e)
         {
             ((System.Timers.Timer)(o)).Enabled = false;
@@ -232,6 +245,9 @@ namespace PowderPixelArt
                 MessageBox.Show("Mouse was not placed in Powder Game Window!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            IntPtr hWnd = WindowFromPoint(Cursor.Position);
+            SetForegroundWindow(hWnd);
 
             //Point temp = Cursor.Position;
             alignMouse();
@@ -288,9 +304,16 @@ namespace PowderPixelArt
 
         private void setUpGame()
         {
-            keyPress(0x4C);
-            keyPress(0x0D);
-            keyPress(0x30);
+            //keyPress(0x4C);
+            moveMouse(PLocations.reset);
+            leftClick();
+            //keyPress(0x0D);
+            moveMouse(PLocations.stop);
+            leftClick();
+            //keyPress(0x30);
+            moveMouse(PLocations.pen);
+            rightClick();
+            rightClick();
             moveMouse(PLocations.dot);
             rightClick();
             moveMouse(PLocations.clear);
@@ -475,6 +498,11 @@ namespace PowderPixelArt
             keybd_event(key, 0, 0x0001, 0);
             System.Threading.Thread.Sleep(SLEEP);
             keybd_event(key, 0, 0x0002, 0); 
+        }
+
+        private void DelayUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            SLEEP = (int)DelayUpDown.Value;
         }
     }
 }
