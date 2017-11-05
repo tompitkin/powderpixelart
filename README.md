@@ -1,3 +1,16 @@
+
+*NOTE:
+This is the archived version of the powder pixel art program. It only works with the Java applet version of the powder game, needs complete control over the mouse, and can be quite temperamental. Use at your own risk!*
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
 Powder Pixel Art
 ==============
 
